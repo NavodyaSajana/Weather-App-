@@ -1,0 +1,25 @@
+name: Azure Deployment Pipeline
+
+on:
+  push:
+    branches:
+      - Weather-App-
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Setup Node.js version
+        uses: actions/setup-node@v4
+        with: 
+          node-version: '18.x'
+      - name: Installing Dependacies
+        run: npm install
+        run: npm install express --save
+      - name: Deploy to Azure
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: slweather
+          package: .
