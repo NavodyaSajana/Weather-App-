@@ -23,6 +23,25 @@ sql.connect(config)
   console.error('Database connection failed: ',err);
 });
 
+app.get('/weather', async (req, res) => {
+  try {
+    // Connect to the database
+    await sql.connect(config);
+
+    // Query to select all data from the weather table
+    const result = await sql.query`SELECT * FROM weather`;
+
+    // Close the database connection
+    await sql.close();
+
+    // Send the data as JSON in the response
+    res.json(result.recordset);
+  } catch (error) {
+    console.error('Error fetching data:', error.message);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
